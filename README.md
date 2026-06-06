@@ -1,83 +1,66 @@
-# Option Pricing Engine
+# Quantitative Finance Option Pricing Engine
 
-A quantitative finance project built in Python for pricing financial options using Black-Scholes and Monte Carlo Simulation methods.
+A Python-based quantitative finance project implementing multiple option pricing techniques.
 
 ## Features
 
-✅ European Call Option Pricing
+- Black-Scholes Option Pricing
+- Monte Carlo Option Pricing
+- Greeks Calculation
+  - Delta
+  - Gamma
+  - Vega
+  - Theta
+  - Rho
+- Implied Volatility Calculation
+- Real Market Data using yfinance
+- Put-Call Parity Validation
 
-✅ European Put Option Pricing
+## Models Implemented
 
-✅ Monte Carlo Call Pricing
+### Black-Scholes Model
 
-✅ Monte Carlo Put Pricing
+Used for European Call and Put option pricing.
 
-✅ Greeks Calculation
-- Delta
-- Gamma
-- Vega
-- Theta
-- Rho
+### Monte Carlo Simulation
 
-✅ Put-Call Parity Validation
+Random path generation for estimating option values.
 
-✅ Implied Volatility Calculation
+### Greeks
 
-✅ Real-Time Market Data using Yahoo Finance
+Sensitivity analysis of option prices.
 
----
+### Implied Volatility
 
-## Technologies Used
+Numerical estimation of market implied volatility.
 
-- Python
-- NumPy
-- SciPy
-- Pandas
-- yFinance
+## Installation
 
----
+```bash
+pip install -r requirements.txt
+```
+
+## Run
+
+```bash
+python european_option_pricing.py
+```
 
 ## Sample Output
 
-```text
-European Call Price = 104.79
-European Put Price = 13.71
+- European Call Price
+- European Put Price
+- Monte Carlo Call Price
+- Monte Carlo Put Price
+- Greeks
+- Implied Volatility
 
-Monte Carlo Call Price = 104.70
-Monte Carlo Put Price = 13.53
+## Future Improvements
 
-Put-Call Parity = True
-
-Delta = 0.8321
-Gamma = 0.00193
-Vega = 73.93
-Theta = -28.96
-Rho = 125.07
-
-Implied Volatility = 0.4426
-```
-
-## Project Structure
-
-```text
-option_pricing/
-│
-├── american_option_pricing.py
-├── european_option_pricing.py
-├── monte_carlo_pricing.py
-├── implied_volatility.py
-├── greeks.py
-├── data_fetcher.py
-├── base_option_pricing.py
-├── requirements.txt
-```
-
-## Applications
-
-- Quantitative Finance
-- Derivatives Pricing
-- Quant Research Preparation
-- Financial Engineering
+- Binomial Tree Pricing
+- Heston Model
+- Option Strategy Analyzer
+- Interactive Dashboard
 
 ## Author
 

@@ -157,12 +157,12 @@ if __name__ == '__main__':
     print("Rho =", greeks["Rho"])
     market_price = call_price
 
-iv = implied_volatility_call(
-    market_price,
-    pricer.spot_price,
-    pricer.strike_price,
-    pricer.time_to_maturity,
-    pricer.risk_free_rate
-)
+    iv = implied_volatility_call(
+        market_price,
+        pricer.spot_price,
+        pricer.strike_price,
+        pricer.time_to_maturity,
+        pricer.risk_free_rate
+    )
 
-print("Implied Volatility =", iv)
+    print("Implied Volatility =", iv)

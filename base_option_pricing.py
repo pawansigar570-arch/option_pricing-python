@@ -152,6 +152,6 @@ class OptionPricingBase(object):
 
 
 if __name__ == '__main__':
-    pricer = OptionPricingBase('AAPL', datetime.datetime(2018, 9, 20), 190)
+    pricer = OptionPricingBase('AAPL', datetime.datetime(2028, 9, 20), 190)
     pricer.initialize_variables()
     print(pricer.spot_price)

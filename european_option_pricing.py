@@ -3,6 +3,8 @@ import datetime
 import logging
 
 import numpy as np
+from monte_carlo_pricing import MonteCarloOptionPricing
+from implied_volatility import implied_volatility_call
 import scipy.stats as stats
 
 from base_option_pricing import OptionPricingBase
@@ -110,7 +112,26 @@ class EuropeanOptionPricing(OptionPricingBase):
                stats.norm.cdf(-1 * d1, 0.0, 1.0))
         logging.info("##### Calculated value for European Put Option is %f " % put)
         return call, put
+    def monte_carlo_price(self, simulations=100000):
+        mc = MonteCarloOptionPricing(
+            spot_price=self.spot_price,
+            strike_price=self.strike_price,
+            risk_free_rate=self.risk_free_rate,
+            volatility=self.volatility,
+            time_to_maturity=self.time_to_maturity
+        )
 
+        return mc.calculate_call_price(simulations)
+    def monte_carlo_put_price(self, simulations=100000):
+        mc = MonteCarloOptionPricing(
+            spot_price=self.spot_price,
+            strike_price=self.strike_price,
+            risk_free_rate=self.risk_free_rate,
+            volatility=self.volatility,
+            time_to_maturity=self.time_to_maturity
+        )
+
+        return mc.calculate_put_price(simulations)
 
 if __name__ == '__main__':
     pricer = EuropeanOptionPricing(
@@ -120,12 +141,28 @@ if __name__ == '__main__':
     )
 
     call_price, put_price = pricer.calculate_option_prices()
+    mc_price = pricer.monte_carlo_price()
+    mc_put_price = pricer.monte_carlo_put_price()
+    print("Monte Carlo Put Price =", mc_put_price)
+
+    print("Monte Carlo Call Price =", mc_price)
     parity = pricer.is_call_put_parity_maintained(call_price, put_price)
     print("Parity = %s" % parity)
     greeks = pricer.calculate_greeks()
 
-print("Delta =", greeks["Delta"])
-print("Gamma =", greeks["Gamma"])
-print("Vega =", greeks["Vega"])
-print("Theta =", greeks["Theta"])
-print("Rho =", greeks["Rho"])
+    print("Delta =", greeks["Delta"])
+    print("Gamma =", greeks["Gamma"])
+    print("Vega =", greeks["Vega"])
+    print("Theta =", greeks["Theta"])
+    print("Rho =", greeks["Rho"])
+    market_price = call_price
+
+iv = implied_volatility_call(
+    market_price,
+    pricer.spot_price,
+    pricer.strike_price,
+    pricer.time_to_maturity,
+    pricer.risk_free_rate
+)
+
+print("Implied Volatility =", iv)

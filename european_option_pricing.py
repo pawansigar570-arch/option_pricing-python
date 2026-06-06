@@ -50,27 +50,45 @@ class EuropeanOptionPricing(OptionPricingBase):
         logging.debug("Calculated value for d2 = %f" % d2)
         return d2
     def calculate_greeks(self):
-            d1 = self._calculate_d1()
+        d1 = self._calculate_d1()
+        d2 = self._calculate_d2()
 
-            delta = stats.norm.cdf(d1)
+        delta = stats.norm.cdf(d1)
 
-            gamma = stats.norm.pdf(d1) / (
-                self.spot_price *
-                self.volatility *
-                np.sqrt(self.time_to_maturity)
-            )
+        gamma = stats.norm.pdf(d1) / (
+            self.spot_price *
+            self.volatility *
+            np.sqrt(self.time_to_maturity)
+        )
 
-            vega = (
-                self.spot_price *
-                stats.norm.pdf(d1) *
-                np.sqrt(self.time_to_maturity)
-            )
+        vega = (
+            self.spot_price *
+            stats.norm.pdf(d1) *
+            np.sqrt(self.time_to_maturity)
+        )
 
-            return {
-                "Delta": delta,
-                "Gamma": gamma,
-                "Vega": vega
-            }
+        theta = (
+            -(self.spot_price * stats.norm.pdf(d1) * self.volatility)
+            / (2 * np.sqrt(self.time_to_maturity))
+            - self.risk_free_rate * self.strike_price
+            * np.exp(-self.risk_free_rate * self.time_to_maturity)
+            * stats.norm.cdf(d2)
+        )
+
+        rho = (
+            self.strike_price *
+            self.time_to_maturity *
+            np.exp(-self.risk_free_rate * self.time_to_maturity)
+            * stats.norm.cdf(d2)
+        )
+
+        return {
+            "Delta": delta,
+            "Gamma": gamma,
+            "Vega": vega,
+            "Theta": theta,
+            "Rho": rho
+        }
 
     def calculate_option_prices(self):
         """ Calculate Call and Put option prices based on the below equations from Black-Scholes.
@@ -109,3 +127,5 @@ if __name__ == '__main__':
 print("Delta =", greeks["Delta"])
 print("Gamma =", greeks["Gamma"])
 print("Vega =", greeks["Vega"])
+print("Theta =", greeks["Theta"])
+print("Rho =", greeks["Rho"])
